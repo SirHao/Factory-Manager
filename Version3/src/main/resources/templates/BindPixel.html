@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>绑定资源</title>
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/css/mdui.min.css">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/js/mdui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <style>
+
+        #FormDiv .form-group
+        {
+            float: left;
+            width: 40%;
+            margin-right: 5%;
+        }
+    </style>
+</head>
+<body class="mdui-theme-primary-indigo mdui-appbar-with-toolbar mdui-drawer-body-left mdui-loaded">
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme ">
+        <a id="toggle" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <span class="mdui-typo-title">智慧水务管理系统</span>
+        <span>重庆大学</span>
+        <div class="mdui-toolbar-spacer"></div>
+
+        <div style="width:130px; margin-right:5px">
+            <div class="mdui-container ">
+                <div class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#example-1'}"
+                     style="height:50px; line-height: 23px; padding: 0px;">
+                    <div style="float: left;">
+                        <span style="font-size:10px;">欢迎光临</span>
+                        <br>
+                        <span><td th:text="${username}"></td></span>
+                    </div>
+                    <div style="float: right; margin: 10px 0"><i class="mdui-icon material-icons">more_vert</i>
+                    </div>
+                </div>
+                <ul class="mdui-menu" id="example-1">
+                    <li class="mdui-menu-item">
+                        <a href="javascript:;" class="mdui-ripple">个人资料</a>
+                    </li>
+                    <li class="mdui-menu-item">
+                        <a href="/out" th:methods="GET">注销</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="mdui-drawer" id="drawer">
+
+    <div class="mdui-collapse mdui-list" mdui-collapse>
+
+        <ul class="mdui-list" mdui-collapse="{accordion: true}" style="max-width: 360px;">
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                <div class="mdui-list-item-content"><a th:href="@{'../../../main'}">主页</a></div>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">dashboard</i>
+                <div class="mdui-list-item-content"><a th:href="@{'../../../resourceOverview'}">资源管理</a></div>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">people</i>
+                    <div class="mdui-list-item-content">工厂</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <!--<ul class="mdui-collapse-item-body mdui-list mdui-list-dense" th:each="device : ${devices}">-->
+                    <!--<li class="mdui-list-item mdui-ripple">-->
+                        <!--<a th:href="@{'../../../main/device'+'/'+${device.type}+'/'+${device.id}}" th:methods="GET">-->
+                            <!--<td th:text="${device.name}">水厂</td>-->
+                        <!--</a></li>-->
+                    <!---->
+                <!--</ul>-->
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense mdui-drawer-open" th:each="Interface : ${Interfaces}">
+                    <li class="mdui-list-item mdui-ripple">
+                        <a th:href="@{'../OMMonitor/'+${Interface.name}}" th:methods="GET">
+                            <td th:text="${Interface.name}"></td>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">device_hub</i>
+                    <div class="mdui-list-item-content">规模管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/addDevice'}">添加规模</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/downscale'}">规模缩减</a></li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">touch_app</i>
+                    <div class="mdui-list-item-content">界面管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/UIConfig/PixelManage'}">图元管理</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/UIConfig/InterfaceManager'}">类3D界面管理</a></li>
+                    <li class="mdui-list-item mdui-ripple">Landing Pages</li>
+                    <li class="mdui-list-item mdui-ripple">Exit Pages</li>
+                </ul>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">shopping_cart</i>
+                <div class="mdui-list-item-content">Ecommerce</div>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<form method="post" >
+    <h2>资源绑定</h2>
+    <div id="FormDiv" class="mdui-textfield">
+        <div class="form-group">
+            <label>绑定类3D界面</label>
+            <input type="text" class="form-control"   th:value="${PostBindInterface}" disabled>
+        </div>
+        <div class="form-group">
+            <label>绑定资源</label>
+            <input type="text" class="form-control" id="" placeholder="" th:value="${PostBindResource}" disabled>
+        </div>
+        <div class="form-group">
+            <label>Left偏移</label>
+            <input id='LeftOffset' type="text"  class="form-control" name="LeftOffset"/>
+        </div>
+        <div class="form-group">
+            <label>Top偏移</label>
+            <input id='TopOffset' type="text"  class="form-control" name="TopOffset"/>
+        </div>
+        <div class="form-group">
+            <label>图元宽</label>
+            <input id='PixelWidth' type="text" class="form-control" name="PixelWidth"/>
+        </div>
+        <div class="form-group">
+            <label>图元高</label>
+            <input id='PixelHeight' type="text" class="form-control" name="PixelHeight">
+        </div>
+        <div class="form-group">
+            <label>指定正常状态图元</label>
+            <input type="text" class="form-control" name="NormalStateName" disabled="disabled"/>
+            <br>
+            <button type="button"  class="mdui-btn-raised mdui-btn mdui-color-theme" data-toggle="modal" data-target="#NormalStateAssignDialog">指定</button>
+        </div>
+        <div class="form-group">
+            <label>指定异常状态图元</label>
+            <input type="text" class="form-control" name="ErrorStateName" disabled="disabled"/>
+            <br>
+            <button type="button"  class="mdui-btn-raised mdui-btn mdui-color-theme" data-toggle="modal" data-target="#ErrorStateAssignDialog" >指定</button>
+        </div>
+
+
+        <button type="button" class="mdui-btn-raised mdui-btn mdui-color-theme" onclick="processSubmit()" >提交</button>
+        <button type="button" class="mdui-btn-raised mdui-btn mdui-color-theme-accent" >取消</button>
+    </div>
+
+</form>
+
+    <div class="modal fade" id="NormalStateAssignDialog" aria-hidden="true" role="dialog">
+            <div class="modal-dialog">
+                <form>
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">绑定正常状态图元</h4>
+                    </div>
+                    <div class="modal-body mdui-table-fluid">
+                        <table class="mdui-table mdui-table-hoverable">
+                            <thead>
+                           <tr> <th>选择</th><th>图元名称</th><th>缩略图</th></tr>
+                            </thead>
+                        <tbody id="PixelShowTBody"></tbody></table></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="processBindInformation()">提交更改</button>
+                    </div>
+                </div><!-- /.modal-content -->
+                </form>
+            </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="ErrorStateAssignDialog" aria-hidden="true" role="dialog">
+        <div class="modal-dialog">
+             <form>
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">绑定异常状态图元</h4>
+                    </div>
+                    <div class="modal-body mdui-table-fluid">
+                        <table class="mdui-table mdui-table-hoverable">
+                        <thead>
+                        <tr> <th>选择</th><th>图元名称</th><th>缩略图</th></tr>
+                        </thead>
+                        <tbody id="PixelShowTBody2"></tbody></table></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="processBindInformation()">提交更改</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </form>
+        </div><!-- /.modal -->
+    </div>
+
+
+</body>
+<script th:inline="javascript">
+    $.ajax({
+        type:'get',
+        url:'/UIConfig/PixelManage/PixelShow/',
+        success:function (data) {
+            // let  newStr = data.substring(1, data.length-1);
+            // console.log(data);
+            // $("#test").attr("src",'data:image/png;base64,'+newStr)
+            for (let i=0;i<data.length;i++)
+            {
+                let ImgName = data[i].name;
+                let Imgcoding = data[i].img.substring(1,data[i].img.length-1);
+                $("#PixelShowTBody").append("<tr><th> <label class=\"mdui-radio\">\n" +
+                    "    <input type=\"radio\" name=\"group1\" value=\""+data[i].name+"\"/>\n" +
+                    "    <i class=\"mdui-radio-icon\"></i>\n" +
+                    "  </label></th><th>"+ImgName+"</th><th><img width='10%' src='"+"data:image/png;base64,"+Imgcoding+"'>"+"</th></tr>");
+                $("#PixelShowTBody2").append("<tr><th> <label class=\"mdui-radio\">\n" +
+                    "    <input type=\"radio\" name=\"group2\" value=\""+data[i].name+"\"/>\n" +
+                    "    <i class=\"mdui-radio-icon\"></i>\n" +
+                    "  </label></th><th>"+ImgName+"</th><th><img width='10%' src='"+"data:image/png;base64,"+Imgcoding+"'>"+"</th></tr>");
+
+            }
+
+        }
+    });
+    function  processBindInformation() {
+        var NameInNormalState = $('input:radio[name="group1"]:checked').val();
+        var NameInErrorState  =$('input:radio[name="group2"]:checked').val();
+        // console.log(NameInNormalState);
+        // console.log( $('input:text[name="NormalStateName"]'));
+        if (NameInNormalState!=undefined)
+        {
+            $('input:text[name="NormalStateName"]')[0].value = NameInNormalState;
+        }
+        if (NameInErrorState!=undefined)
+        {
+            $('input:text[name="ErrorStateName"]')[0].value = NameInErrorState;
+        }
+
+
+       // $('input:text[name="NormalStateName"]')[0].value = NameInNormalState;
+       // $('input:text[name="ErrorStateName"]')[0].value = NameInErrorState;
+
+    }
+    function processSubmit() {
+        let deviceID = [[${DeviceID}]];
+        let InterfaceName = [[${PostBindInterface}]];
+        let LeftOffset = $('input:text[name="LeftOffset"]')[0].value;
+        let TopOffset = $('input:text[name="TopOffset"]')[0].value;
+        let PixelWidth = $('input:text[name="PixelWidth"]')[0].value;
+        let PixelHeight = $('input:text[name="PixelHeight"]')[0].value;
+        let PixelName = $('input:text[name="NormalStateName"]')[0].value;
+      //  let PixelName = PixelNameWithSuffix.substring(0,PixelNameWithSuffix.lastIndexOf("_"));
+        let PixelNameError = $('input:text[name="ErrorStateName"]')[0].value;
+        function jump()
+        {
+            window.location.href = "/UIConfig/InterfaceManager";
+        }
+        $.ajax({
+            type: 'post',
+            url:'/UIConfig/InterfaceManager/BindPixel/PostBindInformation',
+            data:{'deviceID':deviceID,'InterfaceName':InterfaceName,'LeftOffset':LeftOffset,
+                  'TopOffset':TopOffset,'PixelWidth':PixelWidth,'PixelHeight':PixelHeight,
+                  'PixelName':PixelName,'PixelNameError':PixelNameError},
+
+            success: function () {
+                console.log("发送成功");
+
+                    mdui.snackbar({
+                        message: '绑定成功,3秒后跳转',
+                        position: 'bottom'
+                    });
+                setTimeout("window.location.href = \"/UIConfig/InterfaceManager\";",3000);
+            },
+            error: function () {
+                console.log("发送失败");
+                mdui.snackbar({
+                    message:'绑定失败,请重试或联系管理员:刘昊',
+                    position:'bottom'
+                });
+            }
+
+        })
+    }
+
+</script>
+</html>

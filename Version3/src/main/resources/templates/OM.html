@@ -1,0 +1,324 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>运维界面</title>
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/css/mdui.min.css"/>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-treegrid/0.2.0/css/jquery.treegrid.min.css">
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/js/mdui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.0/extensions/treegrid/bootstrap-table-treegrid.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <style>
+        li{ list-style: none;}
+    </style>
+</head>
+<body class="mdui-theme-primary-indigo mdui-appbar-with-toolbar mdui-drawer-body-left mdui-loaded">
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme ">
+        <a id="toggle" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <span class="mdui-typo-title">智慧水务管理系统</span>
+        <span>重庆大学</span>
+        <div class="mdui-toolbar-spacer"></div>
+
+        <div style="width:130px; margin-right:5px">
+            <div class="mdui-container ">
+                <div class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#example-1'}"
+                     style="height:50px; line-height: 23px; padding: 0px;">
+                    <div style="float: left;">
+                        <span style="font-size:10px;">欢迎光临</span>
+                        <br>
+                        <span><td th:text="${username}"></td></span>
+                    </div>
+                    <div style="float: right; margin: 10px 0"><i class="mdui-icon material-icons">more_vert</i>
+                    </div>
+                </div>
+                <ul class="mdui-menu" id="example-1">
+                    <li class="mdui-menu-item">
+                        <a href="javascript:;" class="mdui-ripple">个人资料</a>
+                    </li>
+                    <li class="mdui-menu-item">
+                        <a href="/out" th:methods="GET">注销</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="mdui-drawer" id="drawer">
+
+    <div class="mdui-collapse mdui-list" mdui-collapse>
+
+        <ul class="mdui-list" mdui-collapse="{accordion: true}" style="max-width: 360px;">
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                <div class="mdui-list-item-content"><a th:href="main">主页</a></div>
+            </li>
+            <li class="mdui-list-item mdui-ripple ">
+                <i class="mdui-list-item-icon mdui-icon material-icons">dashboard</i>
+                <div class="mdui-list-item-content"><a th:href="@{'../../../resourceOverview'}">资源管理</a></div>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">people</i>
+                    <div class="mdui-list-item-content">运维界面</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense mdui-drawer-open" th:each="Interface : ${Interfaces}">
+                    <li class="mdui-list-item mdui-ripple">
+                        <!--<a th:href="@{'../../../main/device'+'/'+${device.type}+'/'+${device.id}}" th:methods="GET">-->
+                            <!--<td th:text="${device.name}"></td>-->
+                        <!--</a>-->
+                        <a th:href="@{'../OMMonitor/'+${Interface.name}}" th:methods="GET">
+                            <td th:text="${Interface.name}"></td>
+                        </a>
+
+                    </li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">device_hub</i>
+                    <div class="mdui-list-item-content">规模管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/addDevice'}">添加规模</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/downscale'}">规模缩减</a></li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">touch_app</i>
+                    <div class="mdui-list-item-content">界面管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../UIConfig/PixelManage'}">图元管理</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../UIConfig/InterfaceManager'}">类3D界面管理</a></li>
+                    <!--<li class="mdui-list-item mdui-ripple">Landing Pages</li>-->
+                    <!--<li class="mdui-list-item mdui-ripple">Exit Pages</li>-->
+                </ul>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">shopping_cart</i>
+                <div class="mdui-list-item-content">Ecommerce</div>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<div class="mdui-container">
+    <h3 th:text="${heading}">----类3D运维图</h3>
+    <div class="mdui-divider"></div>
+    <br><br>
+    <div id="ManageWindow" style="width: 90%; position: relative;" class="mdui-card">
+        <img th:src="@{'data:image/png;base64,'+${InterfaceCoding}}" style="max-width:100%">
+
+        <img class="Pixel" th:id="'Pixel-Normal-'+${Pixel.PixelName}" th:each="Pixel:${PixelList}" th:src="@{'data:image/png;base64,'+${Pixel.PixelCoding}}"
+                      th:style="'position:absolute;top:'+${Pixel.top}/${InterfaceHeight}*100+'%;'+'left:'+${Pixel.left}/${InterfaceWidth}*100+'%;'+'width:'+${Pixel.PixelWidth}/${InterfaceWidth}*100+'%;'">
+        <img class="PixelError" th:id="'Pixel-Error'+${Pixel.PixelNameError}" th:data-error="${Pixel.PixelID}" th:each="Pixel:${PixelList}" th:src="@{'data:image/png;base64,'+${Pixel.PixelErrorCoding}}"
+             th:style="' display:none; position:absolute;top:'+${Pixel.top}/${InterfaceHeight}*100+'%;'+'left:'+${Pixel.left}/${InterfaceWidth}*100+'%;'+'width:'+${Pixel.PixelWidth}/${InterfaceWidth}*100+'%;'">
+        <div>
+            <div th:each="Pixel:${PixelList}" class="PixelDiv" th:id="'Div-'+${Pixel.PixelName}" th:style="'display:none;pointer-events: none; z-index:10; background-color:white; position:absolute;top:'+${Pixel.top}/${InterfaceHeight}*140+'%;'+'left:'+${Pixel.left}/${InterfaceWidth}*120+'%;'">
+            <ul class="mdui-list mdui-list-dense PixelInformationUL" th:id="${Pixel.PixelName}"></ul>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    let InterfaceName = [[${InterfaceName}]];
+    let isFactoryInterface = [[${IsFactoryInterface}]];
+    let FloatData;
+    let Pixel = [[${PixelList}]];
+    let flag= new Array([[${PixelList}]].length);
+    
+
+    function bindMouseEvent()
+    {
+       // let PixelDivList = document.getElementsByClassName("PixelDiv");
+       let PixelImgList = document.getElementsByClassName("Pixel");
+       let PixelErrorImgList = document.getElementsByClassName("PixelError");
+       for (let i=0;i<PixelImgList.length;i++)
+       {
+           let id = PixelImgList[i].getAttribute("id");
+           let expression = "Div-"+id.substring(13,id.length);
+           let InformationDIV = document.getElementById(expression);
+           let deviceID=1 ;
+
+           PixelImgList[i].onmouseover = function ()
+           {
+                InformationDIV.style.display = "block";
+           };
+           PixelImgList[i].onmouseout = function ()
+           {
+               InformationDIV.style.display = "none";
+           };
+
+            if (!isFactoryInterface)
+            {
+                for (let k=0;k<Pixel.length;k++)
+                {
+                    if (Pixel[k].PixelName==PixelImgList[i].getAttribute("id").substring(13,id.length))
+                        deviceID = Pixel[k].deviceID;
+                        break;
+
+                }
+                PixelImgList[i].ondblclick = function () {
+                    if (deviceID!=0)
+                        window.location.href = "/main/data/"+deviceID;
+                }
+            }
+
+
+       }
+       for (let i=0;i<PixelErrorImgList.length;i++)
+       {
+           let id = PixelImgList[i].getAttribute("id");
+           let expression = "Div-"+id.substring(13,id.length);  //这里仍然要使用正常状态下的方式
+           let InformationDIV = document.getElementById(expression);
+           PixelErrorImgList[i].onmouseover = function ()
+           {
+               InformationDIV.style.display = "block";
+           };
+           PixelErrorImgList[i].onmouseout = function ()
+           {
+                InformationDIV.style.display = "none";
+           };
+       }
+    }
+    if (isFactoryInterface)
+    {
+        //如果是工厂鸟瞰图
+        setInterval(AjaxRequestInFactoryInterface,5000);
+        AjaxRequestInFactoryInterface();
+    }
+    else
+    {
+        //如果是车间流程图
+        setInterval(AjaxRequestInWorkshopInterface,5000);
+        AjaxRequestInWorkshopInterface();
+    }
+
+    function AjaxRequestInWorkshopInterface()
+    {
+        $.ajax({
+            type: 'post',
+            url:'/OMMonitor/PostWorkshopInterface',
+            data:{'WorkshopInterface':InterfaceName},
+            success:function (data) {
+                console.log("请求成功");
+                FloatData = JSON.parse(data);
+                clearFloatData();
+                console.log("数据清除成功");
+                loadFloatData();  //加载请求到的数据
+                bindMouseEvent(); //绑定鼠标事件
+                showErrorPixel();  //对于异常状态的设备显示异常状态的图元
+                console.log("数据加载成功");
+
+            }
+        })
+    }
+    function clearFloatData()
+    {
+        $('.Pixel-li').remove();
+      //  mdui.JQ('.PixelDiv').remove();
+    }
+
+    function AjaxRequestInFactoryInterface()
+    {
+        $.ajax({
+            type:'post',
+            url:'/OMMonitor/PostFactoryInterface',
+            data:{'FactoryInterface':InterfaceName},
+            success:function (data) {
+                console.log("请求成功");
+                FloatData =JSON.parse(data);
+                clearFloatData();  //清除之前的数据
+                console.log("数据清除成功");
+                loadFloatData();  //加载请求到的数据
+                bindMouseEvent(); //绑定鼠标事件
+                showErrorPixel();  //对于异常状态的设备显示异常状态的图元
+                console.log("数据加载成功");
+
+            }
+        });
+    }
+
+    function showErrorPixel()
+    {
+       for (let i=0;i<flag.length;i++)
+        {
+            if (flag[i]==1)
+            {
+                   $("[data-error="+i+"]")[0].style.display = "block";
+            }
+            else
+            {
+                console.log($("[data-error=i]"));
+                $("[data-error="+i+"]")[0].style.display = "none";
+            }
+        }
+        console.log($("[data-error=1]"));
+    }
+    function loadFloatData()
+    {
+
+       let ULlist = document.getElementsByClassName("PixelInformationUL");
+       for (let i=0;i<ULlist.length;i++)
+       {
+           let ULID =  ULlist[i].getAttribute("id");
+           if(FloatData[ULID]!=null)
+           {
+               let temp_map = FloatData[ULID];
+               for (let key in temp_map)
+               {
+                   mdui.JQ(ULlist[i]).append(generateASlice(key,temp_map[key],i));
+                   mdui.mutation();
+                  // $('#ULID').append(generateASlice(key,temp_map[key]));
+               }
+
+           }
+
+       }
+
+    }
+
+    function generateASlice(dataSliceName,dataSlice,i)
+    {
+        if (dataSliceName=="Status"&&dataSlice==0)
+        {
+            flag[i]=0;
+            return "  <li class=\"mdui-list-item mdui-ripple Pixel-li\">\n" +
+                "    <div class=\"mdui-list-item-content\">"+"状态"+": "+"正常"+"</div>\n" +
+                "  </li>\n" ;
+        }
+        else if(dataSliceName=="Status"&&dataSlice==1)
+        {
+            flag[i]=1;
+            return "  <li class=\"mdui-list-item mdui-ripple Pixel-li\">\n" +
+            "    <div class=\"mdui-list-item-content\">"+"状态"+": "+"异常"+"</div>\n" +
+            "  </li>\n" ;
+        }
+      else
+          return "  <li class=\"mdui-list-item mdui-ripple Pixel-li\">\n" +
+          "    <div class=\"mdui-list-item-content\">"+dataSliceName+": "+dataSlice+"</div>\n" +
+          "  </li>\n" ;
+    }
+</script>
+<script>
+    var inst = new mdui.Drawer('#drawer', overlay = true);
+    document.getElementById('toggle').addEventListener('click', function () {
+        inst.toggle();
+    })
+
+</script>
+</html>

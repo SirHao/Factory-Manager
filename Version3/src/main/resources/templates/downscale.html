@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>delete</title>
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/css/mdui.min.css"/>
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/js/mdui.min.js"></script>
+
+
+</head>
+<body class="mdui-theme-primary-indigo mdui-appbar-with-toolbar mdui-drawer-body-left mdui-loaded">
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme ">
+        <a id="toggle" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <span class="mdui-typo-title">智慧水务管理系统</span>
+        <span>重庆大学</span>
+        <div class="mdui-toolbar-spacer"></div>
+
+        <div style="width:130px; margin-right:5px">
+            <div class="mdui-container ">
+                <div class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#example-1'}"
+                     style="height:50px; line-height: 23px; padding: 0px;">
+                    <div style="float: left;">
+                        <span style="font-size:10px;">欢迎光临</span>
+                        <br>
+                        <span><td th:text="${username}"></td></span>
+                    </div>
+                    <div style="float: right; margin: 10px 0"><i class="mdui-icon material-icons">more_vert</i>
+                    </div>
+                </div>
+                <ul class="mdui-menu" id="example-1">
+                    <li class="mdui-menu-item">
+                        <a href="javascript:;" class="mdui-ripple">个人资料</a>
+                    </li>
+                    <li class="mdui-menu-item">
+                        <a href="/out" th:methods="GET">注销</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="mdui-drawer" id="drawer">
+
+    <div class="mdui-collapse mdui-list" mdui-collapse>
+
+        <ul class="mdui-list" mdui-collapse="{accordion: true}" style="max-width: 360px;">
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                <div class="mdui-list-item-content"><a th:href="main">主页</a></div>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">dashboard</i>
+                <div class="mdui-list-item-content"><a th:href="resourceOverview">资源管理</a></div>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">people</i>
+                    <div class="mdui-list-item-content">运维界面</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense mdui-drawer-open" th:each="Interface : ${Interfaces}">
+                    <li class="mdui-list-item mdui-ripple">
+                        <a th:href="@{'../OMMonitor/'+${Interface.name}}" th:methods="GET">
+                            <td th:text="${Interface.name}"></td>
+                        </a>
+
+                    </li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">device_hub</i>
+                    <div class="mdui-list-item-content">规模管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/changeScale/addDevice'}">添加规模</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/changeScale/downscale'}">规模缩减</a></li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">touch_app</i>
+                    <div class="mdui-list-item-content">界面配置</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/UIConfig/PixelManage'}">图元管理</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/UIConfig/InterfaceManager'}">类3D界面管理</a></li>
+                    <!--<li class="mdui-list-item mdui-ripple">Landing Pages</li>-->
+                    <!--<li class="mdui-list-item mdui-ripple">Exit Pages</li>-->
+                </ul>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">shopping_cart</i>
+                <div class="mdui-list-item-content">Ecommerce</div>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<form th:method="post" th:action="@{'/changeScale/deviceDelete'}">
+    <div style="margin:0 30%; border: #3f51b5 2px solid; padding: 15px;">
+        <div class="mdui-textfield mdui-textfield">
+            <label class="mdui-textfield-label mdui-color-theme-accent">删除名称（递归删除，谨慎操作）</label>
+            <!--<input class="mdui-textfield-input mdui-color-theme-accent" type="text" name="deleteName"/>-->
+            <select class="mdui-select" name="deleteName">
+                <option th:each="device :${Alldevices}" th:value="${device.name}" th:text="${device.name}" > </option>
+            </select>
+        </div>
+        <br>
+        <br>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"  type="submit">
+            删除
+        </button>
+    </div>
+</form>
+</body>
+<script>
+    var inst = new mdui.Drawer('#drawer', overlay = true);
+    document.getElementById('toggle').addEventListener('click', function () {
+        inst.toggle();
+    })
+
+</script>

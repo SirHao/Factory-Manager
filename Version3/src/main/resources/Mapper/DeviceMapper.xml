@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smartwater.demo.DAO.DeviceMapper">
+    <resultMap id="BaseResultMap" type="com.smartwater.demo.domain.Device">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parent_id" jdbcType="INTEGER"/>
+        <result column="entry_time" property="entry_time" jdbcType="TIME"/>
+        <result column="brother_id" property="brother_id" jdbcType="INTEGER"/>
+        <result column="model" property="model" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="function_id" property="function_id" jdbcType="VARCHAR"/>
+        <result column="image_name" property="image_name" jdbcType="VARCHAR"/>
+        <result column="image_name_error" property="image_name_error" jdbcType="VARCHAR"/>
+        <result column="left" property="left" jdbcType="VARCHAR"/>
+        <result column="top" property="top" jdbcType="VARCHAR"/>
+        <result column="background_name" property="background_name" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectAllDevice" resultMap="BaseResultMap">
+        select * from device
+    </select>
+    <select id="selectAllFactory" resultMap="BaseResultMap">
+        select * from device where  type = 1
+    </select>
+
+    <select id="selectAllSubDevice" resultMap="BaseResultMap">
+        select * from device where parent_id = #{id}
+    </select>
+
+    <select id="selectDeviceByID" resultMap="BaseResultMap">
+       select * from device where  id=#{id}
+    </select>
+
+    <select id="selectAllWorkshop" resultMap="BaseResultMap">
+        select * from device where type = 2
+    </select>
+    <select id="selectByBrotherID" resultMap="BaseResultMap">
+        select * from device where brother_id=#{brother_id}
+    </select>
+    <select id="selectByBrotherID2" resultMap="BaseResultMap">
+        select * from device where brother_id=#{brother_id}
+    </select>
+    <select id="selectNextDevice" resultMap="BaseResultMap">
+        select * from device where brother_id = #{id}
+    </select>
+    <select id="selectFirstDevice" resultMap="BaseResultMap">
+        select * from device where parent_id = #{id} and brother_id = -1
+    </select>
+    <select id="selectByBroAndParID" resultMap="BaseResultMap">
+        select * from device where parent_id=#{parent_id} and brother_id=#{brother_id}
+    </select>
+    <select id="selectAllDeviceNotBindResource" resultMap="BaseResultMap">
+        select * from device where image_name ='' or image_name IS NULL
+    </select>
+    <select id="selectAllDeviceByBackgroundName" resultMap="BaseResultMap">
+        select * from device where background_name = #{background_name}
+    </select>
+     <update id="updateBrother" keyProperty="id">
+         update device set brother_id=#{brother_id} where id=#{id}
+     </update>
+    <update id="updateBindingPixel" keyProperty="id">
+        update device set image_name = #{PixelName} ,image_name_error=#{PixelNameError},leftu = #{LeftOffset}, top=#{TopOffset}, background_name=#{InterfaceName}where id=#{id}
+    </update>
+    <insert id="insertFactory"> insert into device(name,type,entry_time,brother_id) values(#{name},1,#{time},-1)</insert>
+
+    <insert id="insertWorkshop">insert into device(name,type,parent_id,brother_id,function_id,entry_time) values (#{name},2,#{parent_id},
+                                #{brother_id},#{function_id},#{time})</insert>
+    <insert id="insertFacility">insert into device(name,type,parent_id,brother_id,function_id,entry_time) values (#{name},3,#{parent_id},
+                                #{brother_id},#{function_id},#{time})</insert>
+
+    <select id="seleteDeviceByName" resultMap="BaseResultMap">
+    select * from device where name = #{name}</select>
+    <delete id="deleteDeviceById" parameterType="java.lang.Integer">
+        delete from device where id = #{id}</delete>
+</mapper>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>主界面</title>
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/css/mdui.min.css"/>
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/js/mdui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../../CSS/WorkshopsLayOut.css">
+
+</head>
+<body class="mdui-theme-primary-indigo mdui-appbar-with-toolbar mdui-drawer-body-left mdui-loaded">
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme ">
+        <a id="toggle" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <span class="mdui-typo-title">智慧水务管理系统</span>
+        <span>重庆大学</span>
+        <div class="mdui-toolbar-spacer"></div>
+
+        <div style="width:130px; margin-right:5px">
+            <div class="mdui-container ">
+                <div class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#example-1'}"
+                     style="height:50px; line-height: 23px; padding: 0px;">
+                    <div style="float: left;">
+                        <span style="font-size:10px;">欢迎光临</span>
+                        <br>
+                        <span><td th:text="${username}"></td></span>
+                    </div>
+                    <div style="float: right; margin: 10px 0"><i class="mdui-icon material-icons">more_vert</i>
+                    </div>
+                </div>
+                <ul class="mdui-menu" id="example-1">
+                    <li class="mdui-menu-item">
+                        <a href="javascript:;" class="mdui-ripple">个人资料</a>
+                    </li>
+                    <li class="mdui-menu-item">
+                        <a href="/out" th:methods="GET">注销</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="mdui-drawer" id="drawer">
+
+    <div class="mdui-collapse mdui-list" mdui-collapse>
+
+        <ul class="mdui-list" mdui-collapse="{accordion: true}" style="max-width: 360px;">
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                <div class="mdui-list-item-content"><a th:href="main">主页</a></div>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">dashboard</i>
+                <div class="mdui-list-item-content"><a th:href="@{'../../../resourceOverview'}">资源管理</a></div>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">people</i>
+                    <div class="mdui-list-item-content">工厂</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense" th:each="device : ${devices}">
+                    <li class="mdui-list-item mdui-ripple">
+                        <a th:href="@{'../../../main/device'+'/'+${device.type}+'/'+${device.id}}" th:methods="GET">
+                            <td th:text="${device.name}">水厂</td>
+                        </a>
+
+                    </li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">device_hub</i>
+                    <div class="mdui-list-item-content">规模管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/addDevice'}">添加规模</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/downscale'}">规模缩减</a></li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">touch_app</i>
+                    <div class="mdui-list-item-content">界面管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'UIConfig/PixelManage'}">图元管理</a></li>
+                    <li class="mdui-list-item mdui-ripple">All Pages</li>
+                    <li class="mdui-list-item mdui-ripple">Landing Pages</li>
+                    <li class="mdui-list-item mdui-ripple">Exit Pages</li>
+                </ul>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">shopping_cart</i>
+                <div class="mdui-list-item-content">Ecommerce</div>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<div id="FactoryFlow">
+
+</div>
+   <script th:inline="javascript">
+       let subworkshops = [[${subWorkshops}]];
+       let floatData = [[${floatData}]];
+       let workshopCount = subworkshops.length;
+       const ElementInRow = 4;
+       let rowsCount = Math.floor(workshopCount/ElementInRow) +1;
+       let FactoryFlowDiv = document.getElementById("FactoryFlow");
+       $(document).ready((layOutWorkshops()));
+       function addOneSliceData(dataSliceName,dataSlcice)
+       {
+
+          return floatSclice =   "  <li class=\"mdui-list-item mdui-ripple\">\n" +
+              "    <div class=\"mdui-list-item-content\">"+dataSliceName+": "+dataSlcice+"</div>\n" +
+              "  </li>\n" ;
+
+       }
+       function generateFloatInformation(i,currRowNumber,outerDiv)
+       {
+           let left = 0
+           if (currRowNumber%2==0)
+           {
+               left = 80+i*200;
+           }
+           else
+           {
+               left = 750- i%ElementInRow*200;
+           }
+           let dataset=floatData[subworkshops[i].id];
+           
+           let top = 80+167*Math.floor(i/ElementInRow);
+           let float = "<div class='floatDiv' data-deviceid='"+subworkshops[i].id+"' id='"+i+"'style='position: absolute; top:"+top+"px; left:"+left+"px;"+" background: white;'>" +
+               "  <ul class=\"mdui-list mdui-list-dense \" id='"+"floatUL"+i+"'>\n" +
+               "</ul> </div>";
+           mdui.JQ(outerDiv).append(float);
+           mdui.mutation();
+           let floatUL = document.getElementById("floatUL"+i);
+           let li_set ="";
+           if(dataset!=null) {
+               for (let key in dataset) {
+                   li_set = li_set + addOneSliceData(key, dataset[key]);
+               }
+               mdui.JQ(floatUL).append(li_set);
+               mdui.mutation();
+           }
+
+           let xx = document.getElementById(i);
+           xx.style.display = "none";
+           return xx;
+       }
+       function layOutWorkshops()
+       {
+           FactoryFlowDiv.style.position = "absolute";
+           // FactoryFlowDiv.style.top = "100px";
+           // FactoryFlowDiv.style.left = "350px";
+           FactoryFlowDiv.style.marginTop = "50px";
+           FactoryFlowDiv.style.marginLeft = "100px";
+           for (let i=0;i<rowsCount;i++)
+           {
+               let row = document.createElement("div");
+               row.className = "row";
+               row.id = "row"+i;
+               FactoryFlowDiv.appendChild(row);
+
+           }
+           for (let i=0;i<subworkshops.length;i++)
+           {
+                let currRowNumber = Math.floor( i/ElementInRow);
+                let currRow = document.getElementById("row"+currRowNumber);
+                let outerDiv = document.createElement("div");
+                outerDiv.className = "outerDiv";
+                currRow.appendChild(outerDiv);
+                let img = document.createElement("img");
+                img.src = "../../../icon/"+subworkshops[i].image_name;
+                img.className = "icon";
+                img.width = 150;
+                img.height = 150;
+                outerDiv.appendChild(img);
+                let workshopName = document.createElement("span");
+                workshopName.innerText = subworkshops[i].name;
+                outerDiv.appendChild(workshopName);
+                let arrow = document.createElement("img");
+                arrow.width = 50;
+                arrow.height = 50;
+                if (i==subworkshops.length-1)
+                {
+                    //do nothing
+                }
+                else if (i%ElementInRow==3)
+                {
+                   //加载↓
+                    arrow.src = "../../../icon/arrow_down.png";
+                    let arrowDiv = document.createElement("div");
+                    currRow.appendChild(arrowDiv);
+                    arrowDiv.appendChild(arrow);
+
+
+                }
+                else if (currRowNumber%2==1)
+                {
+                    //加载←
+                    arrow.src = "../../../icon/arrow_reverse.png";
+                    let arrowDiv = document.createElement("div");
+                    currRow.appendChild(arrowDiv);
+                    arrowDiv.appendChild(arrow);
+                }
+                else
+                {
+                    // let arrow = document.createElement("img");
+                    arrow.src = "../../../icon/arrow.png";
+                    // img.width = 50;
+                    // img.height = 50;
+                    let arrowDiv = document.createElement("div");
+                    currRow.appendChild(arrowDiv);
+                    arrowDiv.appendChild(arrow);
+                }
+
+                    let xx= generateFloatInformation(i,currRowNumber,outerDiv);
+                   outerDiv.onclick = function ()
+                   {
+                       window.location.href = "/main/device/2/"+subworkshops[i].id;
+                   }
+                   outerDiv.onmouseover = function ()
+                   {
+                           xx.style.display = "block";
+                   }
+                   outerDiv.onmouseout = function () {
+                         xx.style.display = "none";
+
+                   }
+               }
+
+
+
+
+
+       }
+   </script>
+</body>
+<script>
+    var inst = new mdui.Drawer('#drawer', overlay = true);
+    document.getElementById('toggle').addEventListener('click', function () {
+        inst.toggle();
+    })
+
+</script>
+</html>

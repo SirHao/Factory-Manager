@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>欢迎使用智慧水务系统</title>
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/css/mdui.min.css"/>
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/js/mdui.min.js"></script>
+
+</head>
+<body class="mdui-theme-primary-indigo">
+<nav class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme ">
+        <span>智慧水务管理系统</span>
+        <div class="mdui-toolbar-spacer"></div>
+        <span class="mdui-typo-title">注册</span>
+    </div>
+</nav>
+<div class="mdui-color-indigo" style="height:500px;">
+</div>
+<div class="mdui-shadow-3" style="position:absolute; top:150px; left:37.5%; width:25%;">
+    <div class="mdui-color-indigo-600" style="height: 130px;">
+        <div style="position: absolute; top:40px; left:40px;">
+            <i class="mdui-icon material-icons" style="transform: scale(2,2)">&#xe853;</i>
+            <br/>
+            <div style="margin-top: 30px;">
+                <span style="font-weight: 300;">
+                    欢迎使用智慧水务管理系统
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="mdui-color-white" style="height: 370px;">
+
+
+        <!--<div class="mdui-container">-->
+
+            <form th:action="@{/postform}" method="post" th:object="${user}">
+
+                <div class="mdui-container">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">用户名</label>
+                        <input type="text" class="mdui-textfield-input" name="username" th:field = "*{username}"/>
+                    </div>
+                </div>
+
+                <!--name:<input type="text" name="name" th:value="${user.name}" th:field="*{user.name}" />-->
+                <div class="mdui-container">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">密码</label>
+                        <input class="mdui-textfield-input" type="password" name="password" th:field = "*{password}"/>
+                    </div>
+                </div>
+                <div class="mdui-container">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">验证码</label>
+                        <input type="text" class="mdui-textfield-input" id="kaptcha" name="kaptcha"
+                               style="color: #000000;" /><span
+                            class="help-block"><br></span> <img
+                            src="kaptcha.jpg" width="100" id="kaptchaImage" title="看不清，点击换一张" />
+                        <!--<small>看不清，点击换一张</small>-->
+                    </div>
+
+                </div>
+                <div class="mdui-container" style=" position:relative;  top:30px; left:30px;">
+                    <label class="mdui-checkbox" style="margin-right: 30px;">
+                        <input type="checkbox"/>
+                        <i class="mdui-checkbox-icon"></i>
+                        记住密码
+                    </label>
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" type="submit">登录
+                    </button>
+                </div>
+
+
+            </form>
+        <!--</div>-->
+    </div>
+</div>
+</body>
+</html>

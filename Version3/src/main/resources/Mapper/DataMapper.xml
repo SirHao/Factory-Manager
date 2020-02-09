@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smartwater.demo.DAO.DataMapper">
+    <resultMap id="BaseResultMap" type="com.smartwater.demo.domain.Data">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="device_id" property="device_id" jdbcType="INTEGER"/>
+        <result column="time" property="time" jdbcType="TIME"/>
+        <result column="para1_type" property="para1_type" jdbcType="INTEGER"/>
+        <result column="para1_value" property="para1_value" jdbcType="FLOAT"/>
+        <result column="para2_type" property="para2_type" jdbcType="INTEGER"/>
+        <result column="para2_value" property="para2_value" jdbcType="FLOAT"/>
+        <result column="para3_type" property="para3_type" jdbcType="INTEGER"/>
+        <result column="para3_value" property="para3_value" jdbcType="FLOAT"/>
+        <result column="para4_type" property="para4_type" jdbcType="INTEGER"/>
+        <result column="para4_value" property="para4_value" jdbcType="FLOAT"/>
+        <result column="para5_type" property="para5_type" jdbcType="INTEGER"/>
+        <result column="para5_value" property="para5_value" jdbcType="FLOAT"/>
+    </resultMap>
+    <select id="selectAllDataByID" resultMap="BaseResultMap" >select * from data where device_id=#{device_id}</select>
+    <insert id="insertData">insert into data(device_id,time,para1_type,para2_type,para3_type,para4_type,para5_type,para1_value,para2_value,para3_value,para4_value,para5_value)values(#{device_id},#{time},#{para1_type},#{para2_type},#{para3_type},#{para4_type},#{para5_type},#{para1_value},#{para2_value},#{para3_value},#{para4_value},#{para5_value})</insert>
+    <select id="selectTheLastRecordById" resultMap="BaseResultMap">
+
+select * from data where device_id=#{device_id} order by time desc limit 1
+    </select>
+</mapper>

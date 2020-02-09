@@ -1,0 +1,240 @@
+<!--传参:username右上角显示-->
+<!--device(id,type)工厂列表显示-->
+<!--list<data>数据-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>数据查询</title>
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/css/mdui.min.css">
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.2/js/mdui.min.js"></script>
+    <style>
+        .chartdiv {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
+
+</head>
+<body class="mdui-theme-primary-indigo mdui-appbar-with-toolbar mdui-drawer-body-left mdui-loaded">
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme ">
+        <a id="toggle" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <span class="mdui-typo-title">智慧水务管理系统</span>
+        <span>重庆大学</span>
+        <div class="mdui-toolbar-spacer"></div>
+
+        <div style="width:130px; margin-right:5px">
+            <div class="mdui-container ">
+                <div class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#example-1'}"
+                     style="height:50px; line-height: 23px; padding: 0px;">
+                    <div style="float: left;">
+                        <span style="font-size:10px;">欢迎光临</span>
+                        <br>
+                        <span><td th:text="${username}"></td></span>
+                    </div>
+                    <div style="float: right; margin: 10px 0"><i class="mdui-icon material-icons">more_vert</i>
+                    </div>
+                </div>
+                <ul class="mdui-menu" id="example-1">
+                    <li class="mdui-menu-item">
+                        <a href="javascript:;" class="mdui-ripple">个人资料</a>
+                    </li>
+                    <li class="mdui-menu-item">
+                        <a href="/out" th:methods="GET">注销</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="mdui-drawer" id="drawer">
+
+    <div class="mdui-collapse mdui-list" mdui-collapse>
+
+        <ul class="mdui-list" mdui-collapse="{accordion: true}" style="max-width: 360px;">
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                <div class="mdui-list-item-content"><a th:href="@{'../../../main'}">主页</a></div>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">dashboard</i>
+                <div class="mdui-list-item-content"><a th:href="@{'../../../resourceOverview'}">资源管理</a></div>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">people</i>
+                    <div class="mdui-list-item-content">运维界面</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <!--<ul class="mdui-collapse-item-body mdui-list mdui-list-dense" th:each="device : ${devices}">-->
+                    <!--<li class="mdui-list-item mdui-ripple">-->
+                        <!--&lt;!&ndash;工厂列表加载&ndash;&gt;-->
+                        <!--<a th:href="@{'../../../main/device'+'/'+${device.type}+'/'+${device.id}}" th:methods="GET">-->
+                            <!--<td th:text="${device.name}">水厂</td>-->
+                        <!--</a></li>-->
+                <!--</ul>-->
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense mdui-drawer-open" th:each="Interface : ${Interfaces}">
+                    <li class="mdui-list-item mdui-ripple">
+                        <a th:href="@{'../OMMonitor/'+${Interface.name}}" th:methods="GET">
+                            <td th:text="${Interface.name}"></td>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">device_hub</i>
+                    <div class="mdui-list-item-content">规模管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/addDevice'}">添加规模</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'../../../changeScale/downscale'}">规模缩减</a></li>
+                </ul>
+            </li>
+            <li class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">touch_app</i>
+                    <div class="mdui-list-item-content">界面管理</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense ">
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/UIConfig/PixelManage'}">图元管理</a></li>
+                    <li class="mdui-list-item mdui-ripple"><a th:href="@{'/UIConfig/InterfaceManager'}">类3D界面管理</a></li>
+                    <!--<li class="mdui-list-item mdui-ripple">Landing Pages</li>-->
+                    <!--<li class="mdui-list-item mdui-ripple">Exit Pages</li>-->
+                </ul>
+            </li>
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">shopping_cart</i>
+                <div class="mdui-list-item-content">Ecommerce</div>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<div class="mdui-panel" mdui-panel>
+     <h1 th:text="${currentDevice}"></h1>
+    <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header"></div>
+        <div class="mdui-panel-item-body">
+            <div  class="chartdiv" id="chartdiv1"></div>
+        </div>
+    </div>
+
+    <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header">Second</div>
+        <div class="mdui-panel-item-body">
+            <div  class="chartdiv" id="chartdiv2"></div>
+        </div>
+    </div>
+
+    <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header">Third</div>
+        <div class="mdui-panel-item-body">
+            <div  class="chartdiv" id="chartdiv3"></div>
+        </div>
+    </div>
+    <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header">Third</div>
+        <div class="mdui-panel-item-body">
+            <div  class="chartdiv" id="chartdi4"></div>
+        </div>
+    </div>
+    <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header">Third</div>
+        <div class="mdui-panel-item-body">
+            <div  class="chartdiv" id="chartdiv5"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    var inst = new mdui.Drawer('#drawer', overlay = true);
+    document.getElementById('toggle').addEventListener('click', function () {
+        inst.toggle();
+    })
+
+</script>
+<script th:inline="javascript">
+
+    function drawAChart(IndexOfPara,functionID,data)
+    {
+        var chart = am4core.create("chartdiv"+functionID, am4charts.XYChart);
+        chart.data = data;
+        am4core.useTheme(am4themes_animated);
+        var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+        var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        var series = chart.series.push(new am4charts.StepLineSeries());
+        series.dataFields.valueY = "para"+IndexOfPara+"_value";
+        series.dataFields.dateX = "date";
+        // series.tooltipText = "{para1_value}";
+        series.tooltip.pointerOrientation = "vertical";
+        chart.cursor = new am4charts.XYCursor();
+        chart.cursor.snapToSeries = series;
+        chart.scrollbarX = new am4core.Scrollbar();
+
+    }
+
+    let function_id = [[${functionID}]];
+
+    function_id_arr = function_id.split(",");
+
+
+
+
+    var data= [[${Datas}]];
+    let dataset = [];
+    let parameterList = [[${Parameter}]];
+
+    // dataset.push({date:data[0].time,value:data[0].para1_value});
+    for(let i=0;i<data.length;i++)
+    {
+
+            dataset.push({date:new Date(data[i].time),para1_value:data[i].para1_value,para2_value:data[i].para2_value,
+            para3_value:data[i].para3_value,para4_value:data[i].para4_value,para5_value:data[i].para5_value});
+
+
+    }
+
+
+    for(let i=0;i<function_id_arr.length;i++) {
+        let function_id = function_id_arr[i];
+        if (data[data.length - 1].para1_type == function_id)
+            drawAChart(1, function_id, dataset);
+        else if (data[data.length - 1].para2_type == function_id)
+            drawAChart(2, function_id, dataset);
+        else if (data[data.length - 1].para3_type == function_id)
+            drawAChart(3, function_id, dataset);
+        else if (data[data.length - 1].para4_type == function_id)
+            drawAChart(4, function_id, dataset);
+        else if (data[data.length - 1].para5_type == function_id)
+            drawAChart(5, function_id, dataset);
+        else ;
+    }
+
+
+      pannel = document.getElementsByClassName("mdui-panel-item");
+    for (let i=0;i<pannel.length;i++)
+    {
+
+         if (pannel[i].childNodes[3].childNodes[1].innerHTML=="")
+         {
+             pannel[i].style.display = "none";
+         }
+         else
+         {
+             pannel[i].childNodes[1].innerHTML = parameterList[i].name;
+         }
+
+    }
+</script>
+</html>

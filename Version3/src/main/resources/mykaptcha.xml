@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <!--Border around kaptcha. Legal values are yes or no. -->
+                        <prop key="kaptcha.border">no</prop>
+                        <!--Color of the border. Legal values are r,g,b (and optional alpha) or white,black,blue. -->
+                        <prop key="kaptcha.border.color">red</prop>
+                        <!--Thickness of the border around kaptcha. Legal values are > 0. -->
+                        <prop key="kaptcha.border.thickness">5</prop>
+                        <!--Width in pixels of the kaptcha image. -->
+                        <prop key="kaptcha.image.width">80</prop>
+                        <!--Height in pixels of the kaptcha image. -->
+                        <prop key="kaptcha.image.height">30</prop>
+                        <!--The image producer. -->
+                        <prop key="kaptcha.producer.impl">com.google.code.kaptcha.impl.DefaultKaptcha </prop>
+                        <!--The text producer. -->
+                        <prop key="kaptcha.textproducer.impl">com.google.code.kaptcha.text.impl.DefaultTextCreator</prop>
+                        <!--The characters that will create the kaptcha. -->
+                        <prop key="kaptcha.textproducer.char.string">abcde2345678gfynmnpwx </prop>
+                        <!--The number of characters to display. -->
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                        <!--A list of comma separated font names. -->
+                        <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>
+                        <!--The size of the font to use. -->
+                        <prop key="kaptcha.textproducer.font.size">20</prop>
+                        <!--The color to use for the font. Legal values are r,g,b. -->
+                        <prop key="kaptcha.textproducer.font.color">black</prop>
+                        <!--The noise producer. -->
+                        <prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.NoNoise </prop>
+                        <!--The noise color. Legal values are r,g,b. -->
+                        <prop key="kaptcha.noise.color">black</prop>
+                        <!--The obscurificator implementation. -->
+                        <prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.ShadowGimpy</prop>
+                        <!--The background implementation. -->
+                        <prop key="kaptcha.background.impl">com.google.code.kaptcha.impl.DefaultBackground</prop>
+                        <!--Ending background color. Legal values are r,g,b. -->
+                        <prop key="kaptcha.background.clear.to">white</prop>
+                        <!--The word renderer implementation. -->
+                        <prop key="kaptcha.word.impl">com.google.code.kaptcha.text.impl.DefaultWordRenderer</prop>
+                        <!--The value for the kaptcha is generated and is put into the HttpSession. This is the key value for that item in the session. -->
+                        <prop key="kaptcha.session.key">KAPTCHA_SESSION_KEY</prop>
+                        <!--The date the kaptcha is generated is put into the HttpSession. This is the key value for that item in the session. -->
+                        <prop key="kaptcha.session.date">KAPTCHA_SESSION_DATE</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

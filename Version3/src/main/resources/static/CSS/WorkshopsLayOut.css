@@ -1,0 +1,26 @@
+#FactoryFlow
+{
+    display: flex;
+    flex-direction: column;
+}
+.row
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.row:nth-child(2n)
+{
+    flex-direction: row-reverse;
+}
+.outerDiv
+{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+.outerDiv span
+{
+    display: block;
+    text-align: center;
+}
